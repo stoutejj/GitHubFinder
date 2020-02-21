@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GitHubFinder</string>
+    <string name="et_search_bar">ENTER USER!!!!</string>
+    <string name="tv_user_name">USERNAME</string>
+    <string name="tv_repo_count">REPO: ###</string>
+
+
+</resources>
