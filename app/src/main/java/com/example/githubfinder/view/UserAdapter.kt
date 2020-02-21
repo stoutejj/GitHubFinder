@@ -9,12 +9,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubfinder.R
+import com.example.githubfinder.model.User
+import com.example.githubfinder.model.UserInfo
 
 /*
 class UserAdapter :
+
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-    var dataSet: WeatherDataList = WeatherDataList(emptyList())
+    var dataSet: List<UserInfo> = UserInfo(emptyList())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : UserViewHolder =
@@ -27,14 +30,12 @@ class UserAdapter :
                 )
         )
 
-    fun setDailyWeatherData(t: WeatherDataList) {
+    fun setUserInfo(t: List<UserInfo>) {
         dataSet = t
         notifyDataSetChanged()
-        //Log.d("TESTING TO SEE OUTPUT: ", dataSet.toString())
-
     }
 
-    override fun getItemCount() = dataSet.list.size
+    override fun getItemCount() = dataSet.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.onBind(dataSet, position)
@@ -52,10 +53,9 @@ class UserAdapter :
         var tvRepoCount: TextView =
             itemView.findViewById(R.id.tv_repo_count)
 
-        fun onBind(data: WeatherDataList, position: Int) {
-            tvDate.text = data.list[position].dt_txt.substring(0, 10) + "   " + position
+        fun onBind(data: User, position: Int) {
+            imUserIcon.text = data.url
 
         }
     }
-}
-*/
+}*/

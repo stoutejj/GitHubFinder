@@ -15,7 +15,7 @@ interface NetworkConnection {
     //EXAMPLE:   https://api.github.com/users
 
 
-    @GET("/users")
+    @GET("users")
     fun getUserList(): Call<List<User>>
 
     //-----------------------------------------------------------------------
@@ -23,7 +23,7 @@ interface NetworkConnection {
     //Base URL:  https://api.github.com
     //EXAMPLE:   https://api.github.com/search/users?q=tom&order=asc
 
-    @GET("/search/users")
+    @GET("search/users")
     fun getUserNameSearch(
         @Query("q") userName : String,
         @Query("order") order: String = "asc"
@@ -32,6 +32,9 @@ interface NetworkConnection {
 
     //Base URL:  https://api.github.com/users/USERNAME
     //EXAMPLE:   https://api.github.com/users/tom
+    @GET
+    fun getUserInfo() : Call<UserInfo>
+
 
     @GET("/users/{username}")
     fun getUserInfo(
@@ -42,7 +45,7 @@ interface NetworkConnection {
     //Base URL:  https://api.github.com/users/USERNAME
     //EXAMPLE:   https://api.github.com/users/tom
 
-    @GET("/users/{username}/repos")
+    @GET("users/{username}/repos")
     fun getPublicRepo(
         @Path("username") userName : String
     ): Call<List<RepoInfo>>

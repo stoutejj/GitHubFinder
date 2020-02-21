@@ -38,15 +38,15 @@ class MainActivity : AppCompatActivity() {
 
         etSearchUser.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                println("Output  " + gitViewModel.userSearchList.value)
+                //println("Output  " + gitViewModel.userSearchList.value)
+                gitViewModel.getUserNameSearch(s.toString())
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                gitViewModel.getUserNameSearch(s.toString())
-
             }
         })
 
