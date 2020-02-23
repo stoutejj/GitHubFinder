@@ -16,6 +16,7 @@
             android:id="@+id/iv_user_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_action_name"
             android:layout_gravity="start|center_vertical"/>
 
         <TextView

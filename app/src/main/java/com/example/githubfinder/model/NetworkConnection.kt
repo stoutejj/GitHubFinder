@@ -25,16 +25,13 @@ interface NetworkConnection {
 
     @GET("search/users")
     fun getUserNameSearch(
-        @Query("q") userName : String,
-        @Query("order") order: String = "asc"
+        @Query("q") userName : String
+        //@Query("order") order: String = "asc"
     ): Call<ItemList>
     //-----------------------------------------------------------------------
 
     //Base URL:  https://api.github.com/users/USERNAME
     //EXAMPLE:   https://api.github.com/users/tom
-    @GET
-    fun getUserInfo() : Call<UserInfo>
-
 
     @GET("/users/{username}")
     fun getUserInfo(
@@ -55,7 +52,7 @@ interface NetworkConnection {
 }
 
 
-data class Network (var url: String){
+class Network (var url: String){
     fun initRetrofit(): NetworkConnection {
         var retrofit = Retrofit.Builder()
             .baseUrl(url)

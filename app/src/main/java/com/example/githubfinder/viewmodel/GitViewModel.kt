@@ -1,5 +1,6 @@
 package com.example.githubfinder.viewmodel
 
+import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,8 @@ import com.example.githubfinder.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.concurrent.schedule
 
 class GitViewModel : ViewModel() {
 
@@ -19,16 +22,19 @@ class GitViewModel : ViewModel() {
     private val _repoList = MutableLiveData<List<RepoInfo>>()
     val repoList: LiveData<List<RepoInfo>> = _repoList
 
+    val userInfoList: MutableList<UserInfo> = mutableListOf()
+
+
     //private val _userInfoList = MutableLiveData<List<UserInfo>>()
     //val userInfoList: LiveData<List<UserInfo>> = _userInfoList
 
     lateinit var userInfo: UserInfo
 
     private val baseApiUrl: String = "https://api.github.com/"
+    private val network = Network(baseApiUrl)
 
 
     fun getUserList() {
-        val network = Network(baseApiUrl)
         network.initRetrofit().getUserList()
             .enqueue(object : Callback<List<User>> {
                 override fun onResponse(
@@ -48,28 +54,27 @@ class GitViewModel : ViewModel() {
     }
 
     fun getUserNameSearch(userName: String) {
-        val network = Network(baseApiUrl)
         network.initRetrofit().getUserNameSearch(userName)
             .enqueue(object : Callback<ItemList> {
                 override fun onResponse(
                     call: Call<ItemList>,
                     response: Response<ItemList>
                 ) {
-                    println("getUserNameSearch SUCCESS")
-                    println(response.body().toString())
-                    _userSearchList.value = response.body()?.items
+                    //println("getUserNameSearch SUCCESS")
+                    //println(response.body().toString())
+                    if(response.isSuccessful) {
+                        _userSearchList.value = response.body()?.items
 
-                    val userURL: List<User> = _userSearchList.value!!
+                        val userURL: List<User> = _userSearchList.value!!
 
-                    val userInfoList: MutableList<UserInfo> = mutableListOf()
+                        for (user in userURL) {
+                            println("USERNAME = " + user.url.takeLastWhile { !it.equals('/') }) // TAKES THE USERNAME SUBSTRING FROM THE USER URL -->>> getUserInfo(USERNAME)
 
-                    for (user in userURL) {
+                                getUserInfo(user.url.takeLastWhile { !it.equals('/') })
 
-                       println("USERNAME = " + user.url.takeLastWhile { !it.equals('/') }) // TAKES THE USERNAME SUBSTRING FROM THE USER URL -->>> getUserInfo(USERNAME)
-                        //getUserInfo(user.url.takeLastWhile { !it.equals("/") })
-                        //userInfo
+                            }
 
-                        //userInfoList.add(userInfo)
+                            //userInfoList.add(userInfo)
                     }
                 }
 
@@ -82,33 +87,38 @@ class GitViewModel : ViewModel() {
 
 
     fun getUserInfo(userURL: String) {
-        val network = Network(baseApiUrl)
         network.initRetrofit().getUserInfo(userURL)
             .enqueue(object : Callback<UserInfo> {
                 override fun onResponse(
                     call: Call<UserInfo>,
                     response: Response<UserInfo>
                 ) {
-                    userInfo = response.body()!!
+                    //println("getUserInfo SUCCESS")
+                    response.body()?.let {
+
+                        userInfo = it
+                        println("USER LOGIN " + userInfo.login)
+                        userInfoList.add(userInfo)
+                    }
+//                    userInfo = response.body()!!
 
                 }
 
                 override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                    println("getUserNameSearch FAILURE")
+                    println("getUserInfo FAILURE")
                     t.printStackTrace()
                 }
             })
     }
 
     fun getPublicRepo(userName: String) {
-        val network = Network(baseApiUrl)
         network.initRetrofit().getPublicRepo(userName)
             .enqueue(object : Callback<List<RepoInfo>> {
                 override fun onResponse(
                     call: Call<List<RepoInfo>>,
                     response: Response<List<RepoInfo>>
                 ) {
-                    //println("getUserNameSearch SUCCESS")
+                    //println("getPublicRepo SUCCESS")
                     // println(response.body().toString())
                     _repoList.value = response.body()
                 }

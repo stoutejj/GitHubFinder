@@ -5,7 +5,7 @@ data class ItemList(
 )
 
 data class User(
-    var url: String
+    var url : String
 )
 
 data class UserInfo(

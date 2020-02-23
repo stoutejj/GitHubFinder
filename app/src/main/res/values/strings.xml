@@ -4,5 +4,21 @@
     <string name="tv_user_name">USERNAME</string>
     <string name="tv_repo_count">REPO: ###</string>
 
+    <string name="repo_user_icon">USER ICON</string>
+    <string name="repo_user_name">USERNAME</string>
+    <string name="repo_user_email">EMAIL</string>
+    <string name="repo_user_location">LOCATION</string>
+    <string name="repo_user_join_date">JOIN DATE</string>
+    <string name="repo_user_followers"># FOLLOWERS</string>
+    <string name="repo_user_following">FOLLOWING #</string>
+    <string name="repo_user_bio">BIO: LONG DEPICTION OF ONES LIFE</string>
+    <string name="repo_search_bar">SEARCH FOR USER REPOSITORIES</string>
+
+    <string name="tv_repo_name">REPONAME</string>
+    <string name="tv_repo_fork_count"># FORKS</string>
+    <string name="tv_repo_star_count"># STARS</string>
+
+
+
 
 </resources>
