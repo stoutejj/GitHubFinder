@@ -5,17 +5,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubfinder.R
+import com.example.githubfinder.model.RepoInfo
+import com.example.githubfinder.model.User
 import com.example.githubfinder.model.UserInfo
 import com.squareup.picasso.Picasso
+import com.example.githubfinder.viewmodel.GitViewModel
 
 
-class UserAdapter :
+
+class UserAdapter (val userClickListener: UserClickListener) :
 
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     var dataSet: List<UserInfo> = emptyList()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : UserViewHolder =
@@ -28,19 +36,22 @@ class UserAdapter :
                 )
         )
 
-    fun setUserInfo(t: List<UserInfo>) {
-        dataSet = t
+    fun setUserInfo(userInfo: List<UserInfo>) {
+        dataSet = userInfo
         notifyDataSetChanged()
     }
 
     override fun getItemCount() = dataSet.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.onBind(dataSet[position], position)
+        holder.onBind(dataSet[position], position, userClickListener)
     }
 
     class UserViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+
+        val cardView : CardView =
+            itemView.findViewById(R.id.user_card_view)
 
         var ivUserIcon: ImageView =
             itemView.findViewById(R.id.iv_user_icon)
@@ -51,13 +62,18 @@ class UserAdapter :
         var tvRepoCount: TextView =
             itemView.findViewById(R.id.tv_repo_count)
 
-        fun onBind(data: UserInfo, position: Int) {
+        fun onBind(data: UserInfo, position: Int, userClickListener: UserClickListener) {
 
-            var userIcon: String = data.avatar_url
-
-            Picasso.get().load("http://openweathermap.org/img/wn/$userIcon@2x.png").into(ivUserIcon)
+            Picasso.get().load(data.avatar_url).into(ivUserIcon)
             tvUserName.text = data.login
             tvRepoCount.text = data.public_repos.toString()
+
+            itemView.setOnClickListener { userClickListener.onUserClicked(data) }
+            //tvRepoCount.text = data.public_repos.toString()
         }
+    }
+
+    interface UserClickListener {
+        fun onUserClicked(userInfo: UserInfo)
     }
 }
