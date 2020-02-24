@@ -8,9 +8,7 @@ data class ItemList(
 )
 
 data class User(
-    var url : String,
-    var avatar_url : String,
-    var login : String
+    var url : String
 
 )
 @Parcelize

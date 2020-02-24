@@ -53,21 +53,26 @@ class MainActivity : AppCompatActivity(), UserAdapter.UserClickListener {
 
             val userList: List<User> = it
 
-            val list = mutableListOf<UserInfo>()
-            val userInfoList: MutableList<UserInfo> = mutableListOf()
+
+            var list = mutableListOf<UserInfo>()
+            //val userInfoList: MutableList<UserInfo> = mutableListOf()
+
+
+            ////    NEED TO FIGURE OUT HOW TO STORE AND UPDATE USER INFO LIST TO PASS TO THE ADAPTER
 
             for (user in userList) {
                 println("USERNAME = " + user.url.takeLastWhile { !it.equals('/') }) // TAKES THE USERNAME SUBSTRING FROM THE USER URL -->>> getUserInfo(USERNAME)
                 gitViewModel.getUserInfo(user.url.takeLastWhile { !it.equals('/') })
 
                 println("USER INFO ----> " + gitViewModel.userInfo)
+                list.add(gitViewModel.userInfo)
 
                 //userInfoList.add(gitViewModel.userInfo)
             }
 
             //println("USER LIST ADDED: " + gitViewModel.userList.value.toString())
 
-            userRecyclerAdapter.setUserInfo(userInfoList)
+            userRecyclerAdapter.setUserInfo(list)
         })
 
         et_search_bar.addTextChangedListener(object : TextWatcher {
