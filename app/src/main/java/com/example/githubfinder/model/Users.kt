@@ -1,6 +1,8 @@
 package com.example.githubfinder.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 data class ItemList(
@@ -11,9 +13,11 @@ data class User(
     var url : String
 
 )
+@Entity(tableName =  "user_collection")
 @Parcelize
 data class UserInfo(
     var avatar_url : String,
+    @PrimaryKey
     var login : String,
     var email : String,
     var location : String,

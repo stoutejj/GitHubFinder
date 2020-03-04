@@ -1,19 +1,27 @@
 package com.example.githubfinder.viewmodel
 
-import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.githubfinder.model.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.android.schedulers.AndroidSchedulers.*
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.schedulers.Schedulers.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import retrofit2.Response
+
+private const val TAG = "GitViewModel"
 
 class GitViewModel : ViewModel() {
 
-    private val _userList = MutableLiveData<MutableList<UserInfo>>()
-    val userList: LiveData<MutableList<UserInfo>> = _userList
+/*    val userDao : UserCollectionDao
+            = UserDB.getDatabase(
+                CustomApplication.getApplication() as Context
+            ),getDao()*/
+
+    //private val _userList = MutableLiveData<MutableList<UserInfo>>()
+    //val userList: LiveData<MutableList<UserInfo>> = _userList
 
     private val _userSearchList = MutableLiveData<List<User>>()
     val userSearchList: LiveData<List<User>> = _userSearchList
@@ -21,69 +29,97 @@ class GitViewModel : ViewModel() {
     private val _repoList = MutableLiveData<List<RepoInfo>>()
     val repoList: LiveData<List<RepoInfo>> = _repoList
 
-    val userInfoList: MutableList<UserInfo> = mutableListOf()
+    private val _userInfoList = MutableLiveData<List<UserInfo>>()
+    val userInfoList: MutableLiveData<MutableList<UserInfo>> =
+        MutableLiveData<MutableList<UserInfo>>()
 
-    lateinit var userInfo: UserInfo
+    private val _userInfo: MutableLiveData<UserInfo> = MutableLiveData()
+    val userInfo: LiveData<UserInfo> = _userInfo
 
-    @SuppressLint("CheckResult")
     fun getUserNameSearch(userName: String) {
         val baseApiUrl = "https://api.github.com/"
         val network = Network(baseApiUrl)
-        network.initRetrofit().getUserNameSearch(userName)
-            .subscribeOn(io())
-            .unsubscribeOn(computation())
-            .observeOn(mainThread())
-            .subscribe({
-                _userSearchList.value = it.items
-                println("GET USER NAME SEARCH: " + _userSearchList.value)
 
-            }, {
-                println("GET USER NAME SEARCH ERROR")
-            })
+        println("STARTING USER SEARCH....")
+        println("USER SEARCH LIST 1: " + _userSearchList.value)
+
+        viewModelScope.launch(IO){
+
+            println("VIEW MODEL SCOPE")
+
+            val response = network.initRetrofit().getUserNameSearch(userName)
+            if (response.isSuccessful) {
+                _userSearchList.value =
+                    response.body()?.items
+                println("USER SEARCH LIST : " + _userSearchList.value)
+            }
+            else{
+                println("FAILURE")
+            }
+        }
+
+
+
+
+        /* viewModelScope.launch(IO) {
+             println("ENTERING VIEW MODEL SCOPE....")
+
+
+            // Log.d(TAG, userSearchList.toString())
+
+            // _userSearchList.postValue(userSearchList)
+
+             //println("USER SEARCH LIST 3: ${userSearchList.size}")
+
+             //val userList = network.initRetrofit().getUserNameSearch(userName).items
+
+            // println("USER SEARCH LIST 4: " + userList)
+
+ //
+ //
+            val userList: List<User> = _userSearchList.value!!
+
+ //                for (user in userList) {
+ //                    getUserInfo(user.url.takeLastWhile { !it.equals('/') })
+ //                }
+ //                val deferred:List<Deferred<List<UserInfo>>> = userList.map { user ->
+ //                    async { getUserInfo(user.url.takeLastWhile { it != '/' })}
+ //
+ //                }
+ //
+                 val deferred: List<Deferred<UserInfo>> = userList.map { user ->
+                     async { getUserInfo(user.url.takeLastWhile { it != '/' })}
+
+                 }
+                 _userInfoList.postValue(deferred.awaitAll())
+         }*/
+    }
+
+    fun setUserInfo(userInfo: UserInfo) {
+        val update = userInfo
+        if (_userInfo.value == update) {
+            return
+        }
+        _userInfo.value = update
     }
 
 
-    fun setUserInfo(user : UserInfo) : UserInfo {
-        userInfo = user
-
-        println("SET USER INFO : " + userInfo.login)
-
-        return userInfo
-    }
-
-
-        @SuppressLint("CheckResult")
-    fun getUserInfo(userURL: String){
+    suspend fun getUserInfo(userURL: String): UserInfo {
         val baseApiUrl = "https://api.github.com/"
         val network = Network(baseApiUrl)
-        network.initRetrofit().getUserInfo(userURL)
-            .subscribeOn(io())
-            .unsubscribeOn(computation())
-            .observeOn(mainThread())
-            .subscribe({
-                println("GET USER INFO : " + it.login)
-                setUserInfo(it)
-            }, {
-                println("GET USER INFO ERROR")
-            })
+        println("STARTING GET USER INFO ....")
+        return network.initRetrofit().getUserInfo(userURL)
     }
 
-    @SuppressLint("CheckResult")
-    fun getUserRepo(userName: String) {
+    suspend fun getUserRepo(userName: String) {
         val baseApiUrl = "https://api.github.com/"
         val network = Network(baseApiUrl)
-        network.initRetrofit().getUserRepo(userName)
-            .subscribeOn(io())
-            .unsubscribeOn(computation())
-            .observeOn(mainThread())
-            .subscribe({
-                _repoList.value = it
-                println("USER REPO LIST: " + _repoList.value)
-
-            }, {
-                println("USER REPO ERROR")
-            })
+        withContext(IO) {
+            _repoList.value = network.initRetrofit().getUserRepo(userName)
+        }
     }
+
+}
 
 
 /*
@@ -107,8 +143,6 @@ class GitViewModel : ViewModel() {
                 }
             })
     }*/
-}
-
 
 
 /*
@@ -130,8 +164,6 @@ class GitViewModel : ViewModel() {
                 }
             })
     }*/
-
-
 
 
 /*
@@ -163,7 +195,6 @@ class GitViewModel : ViewModel() {
                 t.printStackTrace()
             }
         })*/
-
 
 
 /*

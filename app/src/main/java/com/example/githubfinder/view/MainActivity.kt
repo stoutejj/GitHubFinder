@@ -23,9 +23,13 @@ import com.example.githubfinder.model.RepoInfo
 import com.example.githubfinder.model.User
 import com.example.githubfinder.model.UserInfo
 import com.example.githubfinder.viewmodel.GitViewModel
+import io.reactivex.internal.schedulers.IoScheduler
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.username_item_layout.*
 import kotlinx.android.synthetic.main.username_item_layout.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -41,51 +45,57 @@ class MainActivity : AppCompatActivity(), UserAdapter.UserClickListener {
         user_recycler.layoutManager = LinearLayoutManager(this@MainActivity)
         user_recycler.adapter = userRecyclerAdapter
 
-        /*
-        val userRecyclerAdapter = UserAdapter()
-        user_recycler.layoutManager = LinearLayoutManager(this@MainActivity)
-        user_recycler.adapter = userRecyclerAdapter   */
+        println("USER SEARCH LIST 0: " + gitViewModel.userSearchList.value)
 
-        gitViewModel.getUserNameSearch("stoutejj")
-        //gitViewModel.getUserInfo("tom")
-        gitViewModel.userSearchList.observe(this, Observer {
-            //gitViewModel.getUserInfo()
+        gitViewModel.getUserNameSearch("antonino")
 
-            val userList: List<User> = it
+        gitViewModel.userInfoList.observe(this, Observer {
 
+            //val useriList: List<User> = it
 
-            var list = mutableListOf<UserInfo>()
+            //var list = mutableListOf<UserInfo>()
             //val userInfoList: MutableList<UserInfo> = mutableListOf()
+             //val userInfoList: MutableList<UserInfo> = mutableListOf()
+            //var userInfoList = arrayListOf<UserInfo>()
 
+           // userRecyclerAdapter.setUserInfo(it)
 
-            ////    NEED TO FIGURE OUT HOW TO STORE AND UPDATE USER INFO LIST TO PASS TO THE ADAPTER
+                //println("USER INFO ----> " + gitViewModel.userInfo)
+                //
+                //sleep(2000)
 
-            for (user in userList) {
-                println("USERNAME = " + user.url.takeLastWhile { !it.equals('/') }) // TAKES THE USERNAME SUBSTRING FROM THE USER URL -->>> getUserInfo(USERNAME)
-                gitViewModel.getUserInfo(user.url.takeLastWhile { !it.equals('/') })
-
-                println("USER INFO ----> " + gitViewModel.userInfo)
-                list.add(gitViewModel.userInfo)
-
-                //userInfoList.add(gitViewModel.userInfo)
+                //userInfoList.add(gitViewModel.getUser())
             }
 
             //println("USER LIST ADDED: " + gitViewModel.userList.value.toString())
+            //println("USER INFO LIST FROM LOOP" + userInfoList)
+            //println("USER INFO LIST FROM VIEW MODEL" + gitViewModel.userInfoList)
+            //println("userInfoList: " + userInfoList)
 
-            userRecyclerAdapter.setUserInfo(list)
-        })
+            //println("gitViewModel.userInfoList" + gitViewModel.userInfoList)
+
+
+            //
+        )
 
         et_search_bar.addTextChangedListener(object : TextWatcher {
+            var timer = Timer()
             override fun afterTextChanged(s: Editable?) {
-                //println("Output  " + gitViewModel.userSearchList.value)
-                //SystemClock.sleep(10000)
-                // gitViewModel.getUserNameSearch(s.toString())
+                timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+
+                           // gitViewModel.getUserNameSearch(s.toString())
+
+                    }
+                }, 2000)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                timer.cancel()
             }
         })
 

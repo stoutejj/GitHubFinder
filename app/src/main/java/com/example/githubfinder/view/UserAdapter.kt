@@ -22,8 +22,9 @@ class UserAdapter (val userClickListener: UserClickListener) :
 
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-    var dataSet: List<UserInfo> = emptyList()
 
+
+    var dataSet: List<UserInfo> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : UserViewHolder =
@@ -44,14 +45,12 @@ class UserAdapter (val userClickListener: UserClickListener) :
     override fun getItemCount() = dataSet.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+
         holder.onBind(dataSet[position], position, userClickListener)
     }
 
     class UserViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
-        val cardView : CardView =
-            itemView.findViewById(R.id.user_card_view)
 
         var ivUserIcon: ImageView =
             itemView.findViewById(R.id.iv_user_icon)
@@ -69,7 +68,6 @@ class UserAdapter (val userClickListener: UserClickListener) :
             tvRepoCount.text = data.public_repos.toString()
 
             itemView.setOnClickListener { userClickListener.onUserClicked(data) }
-            //tvRepoCount.text = data.public_repos.toString()
         }
     }
 
