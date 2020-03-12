@@ -5,26 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubfinder.R
-import com.example.githubfinder.model.RepoInfo
 import com.example.githubfinder.model.User
 import com.example.githubfinder.model.UserInfo
 import com.squareup.picasso.Picasso
-import com.example.githubfinder.viewmodel.GitViewModel
-
-
 
 class UserAdapter (val userClickListener: UserClickListener) :
 
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-
-
-    var dataSet: List<UserInfo> = emptyList()
+    var dataSet: List<User> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : UserViewHolder =
@@ -37,7 +28,7 @@ class UserAdapter (val userClickListener: UserClickListener) :
                 )
         )
 
-    fun setUserInfo(userInfo: List<UserInfo>) {
+    fun setUserInfo(userInfo: List<User>) {
         dataSet = userInfo
         notifyDataSetChanged()
     }
@@ -61,17 +52,17 @@ class UserAdapter (val userClickListener: UserClickListener) :
         var tvRepoCount: TextView =
             itemView.findViewById(R.id.tv_repo_count)
 
-        fun onBind(data: UserInfo, position: Int, userClickListener: UserClickListener) {
+        fun onBind(user: User, position: Int, userClickListener: UserClickListener) {
 
-            Picasso.get().load(data.avatar_url).into(ivUserIcon)
-            tvUserName.text = data.login
-            tvRepoCount.text = data.public_repos.toString()
+            Picasso.get().load(user.avatar_url).into(ivUserIcon)
+            tvUserName.text = user.login
+            //tvRepoCount.text = data.public_repos.toString()
 
-            itemView.setOnClickListener { userClickListener.onUserClicked(data) }
+            itemView.setOnClickListener { userClickListener.onUserClicked(user.login) }
         }
     }
 
     interface UserClickListener {
-        fun onUserClicked(userInfo: UserInfo)
+        fun onUserClicked(userName: String)
     }
 }
