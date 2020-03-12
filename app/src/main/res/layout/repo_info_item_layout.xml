@@ -16,15 +16,21 @@
             android:id="@+id/tv_repo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tv_repo_name"
+            android:layout_gravity="start"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="24dp"
-            android:layout_gravity="start"/>
+            android:text="@string/tv_repo_name"
+            android:textColor="#000000"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_user_fork_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tv_repo_fork_count"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:layout_marginEnd="15dp"
             android:layout_marginTop="8dp"
             android:layout_gravity="end"/>
 
@@ -33,6 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tv_repo_star_count"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:layout_marginEnd="15dp"
             android:layout_marginTop="40dp"
             android:layout_gravity="end"/>
 

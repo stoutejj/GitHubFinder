@@ -51,8 +51,8 @@ class RepoAdapter(val repoClickListener: RepoClickListener) :
         fun onBind(data: RepoInfo, position: Int, repoClickListener: RepoClickListener) {
 
             tvRepoName.text = data.name
-            tvRepoForks.text = data.forks.toString()
-            tvRepoStars.text = data.stargazers_count.toString()
+            tvRepoForks.text = data.forks.toString() + " FORKS"
+            tvRepoStars.text = data.stargazers_count.toString() + " STARS"
 
             itemView.setOnClickListener { repoClickListener.onRepoClicked(data.html_url) }
         }

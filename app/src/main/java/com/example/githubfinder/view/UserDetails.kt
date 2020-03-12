@@ -45,7 +45,7 @@ class UserDetails : AppCompatActivity(), RepoAdapter.RepoClickListener {
         repo_user_join_date.text = "Join Date: " + date
         repo_user_followers.text = userInfo?.followers.toString() + " Followers"
         repo_user_following.text = "Following " + userInfo?.followers.toString()
-        repo_user_bio.text = userInfo?.login
+        repo_user_bio.text = userInfo?.bio
 
         userInfo?.login?.let { gitViewModel.getUserRepo(it) }
         gitViewModel.repoList.observe(this, Observer {

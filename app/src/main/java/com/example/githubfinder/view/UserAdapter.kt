@@ -56,7 +56,6 @@ class UserAdapter (val userClickListener: UserClickListener) :
 
             Picasso.get().load(user.avatar_url).into(ivUserIcon)
             tvUserName.text = user.login
-            //tvRepoCount.text = data.public_repos.toString()
 
             itemView.setOnClickListener { userClickListener.onUserClicked(user.login) }
         }

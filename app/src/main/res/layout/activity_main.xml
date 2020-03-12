@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
@@ -12,7 +13,10 @@
         android:id="@+id/et_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/et_search_bar" />
+        android:hint="@string/et_search_bar"
+        android:textColorHint="#BFBF"
+        android:textColor="#FFFF"
+        android:backgroundTint="#FFFF"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_recycler"
