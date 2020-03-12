@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.UserDetails">
+
+    <ImageView
+        android:id="@+id/repo_user_icon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:srcCompat="@drawable/ic_action_name" />
+
+
+    <TextView
+        android:id="@+id/repo_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="140dp"
+        android:text="@string/repo_user_name"/>
+
+    <TextView
+        android:id="@+id/repo_user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="140dp"
+        android:text="@string/repo_user_email"/>
+
+    <TextView
+        android:id="@+id/repo_user_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="140dp"
+        android:text="@string/repo_user_location"/>
+
+    <TextView
+        android:id="@+id/repo_user_join_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="140dp"
+        android:text="@string/repo_user_join_date"/>
+
+    <TextView
+        android:id="@+id/repo_user_followers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="140dp"
+        android:text="@string/repo_user_followers"/>
+
+    <TextView
+        android:id="@+id/repo_user_following"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:layout_marginStart="140dp"
+        android:text="@string/repo_user_following"/>
+
+    <TextView
+        android:id="@+id/repo_user_bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:layout_centerHorizontal="true"
+        android:inputType="textMultiLine"
+        android:text="@string/repo_user_bio"/>
+
+    <EditText
+        android:id="@+id/repo_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:gravity="center"
+        android:hint="@string/repo_search_bar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/repo_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="224dp"
+        tools:listitem="@layout/repo_info_item_layout"/>
+
+</RelativeLayout>
